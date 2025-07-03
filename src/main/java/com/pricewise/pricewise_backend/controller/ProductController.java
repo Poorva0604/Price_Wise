@@ -194,6 +194,7 @@ private List<ProductDto> fetchFromWalmart(String query) {
     return products;
 }
 
+
 private Map<String, Object> computeFilteredResults(List<ProductDto> products) {
     Map<String, Object> result = new HashMap<>();
 
@@ -269,11 +270,16 @@ private Map<String, Object> computeFilteredResults(List<ProductDto> products) {
         ProductDto p1 = validForRecommendation.get(i);
         ProductDto p2 = validForRecommendation.get(j);
         String cleanedPriceStr1 = p1.getPrice().replaceAll("[^0-9.]", ""); // removes $, commas, etc.
-        Double price1 = cleanedPriceStr1.isEmpty() ? null : Double.parseDouble(cleanedPriceStr1);
-        double score1 = price1 * 0.4 - price1 * 0.6;
+        // Double price1 = cleanedPriceStr1.isEmpty() ? null : Double.parseDouble(cleanedPriceStr1);
+        // double score1 = price1 * 0.4 - price1 * 0.6;
         String cleanedPriceStr2 = p2.getPrice().replaceAll("[^0-9.]", ""); // removes $, commas, etc.
-        Double price2 = cleanedPriceStr2.isEmpty() ? null : Double.parseDouble(cleanedPriceStr2);
-        double score2 = price2 * 0.4 - price2 * 0.6;
+        // Double price2 = cleanedPriceStr2.isEmpty() ? null : Double.parseDouble(cleanedPriceStr2);
+        // double score2 = price2 * 0.4 - price2 * 0.6;
+        Double price1 = cleanedPriceStr1.isEmpty() ? 0.0 : Double.parseDouble(cleanedPriceStr1);
+Double price2 = cleanedPriceStr2.isEmpty() ? 0.0 : Double.parseDouble(cleanedPriceStr2);
+
+double score1 = price1 * 0.4 - price1 * 0.6;
+double score2 = price2 * 0.4 - price2 * 0.6;
 
         if (score2 < score1) {
             ProductDto temp = validForRecommendation.get(i);
@@ -319,45 +325,4 @@ private Map<String, Object> computeFilteredResults(List<ProductDto> products) {
 
 
 
-//========================================================================================
-    
-    // private List<ProductDto> fetchFromFlipkart(String query) {
-    // List<ProductDto> products = new ArrayList<>();
-    // OkHttpClient client = new OkHttpClient();
-
-    // try {
-    //     String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
-    //     String url = "https://dummyjson.com/products/search?q=" + encodedQuery;
-
-    //     Request request = new Request.Builder()
-    //         .url(url)
-    //         .get()
-    //         .build();
-    //     System.out.println("after req in flipcart");
-    //     Response response = client.newCall(request).execute();
-
-    //     if (response.isSuccessful() && response.body() != null) {
-    //         ObjectMapper mapper = new ObjectMapper();
-    //         JsonNode root = mapper.readTree(response.body().string());
-    //         JsonNode items = root.path("products");
-
-    //         for (JsonNode item : items) {
-    //             ProductDto product = new ProductDto();
-    //             product.setTitle(item.path("title").asText());
-    //             product.setPrice("₹" + item.path("price").asText());
-    //             product.setImage(item.path("thumbnail").asText());
-    //             product.setLink("https://dummyjson.com/products/" + item.path("id").asText());
-    //             product.setRating(item.path("rating").asText());
-    //             product.setPlatform("Flipkart (Mock)");
-    //             products.add(product);
-    //         }
-    //     } else {
-    //         System.out.println("DummyJSON API ERROR: " + response.code() + " - " + response.message());
-    //     }
-    // } catch (IOException e) {
-    //     e.printStackTrace();
-    // }
-
-    // return products;
-    // }
 }
