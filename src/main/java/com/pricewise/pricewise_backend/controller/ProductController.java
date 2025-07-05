@@ -208,10 +208,11 @@ private Map<String, Object> computeFilteredResults(List<ProductDto> products) {
     // First pass: find min price and max rating
     for (ProductDto p : products) {
         Double price,rating;
-        if(p.getPrice()==""|| p.getPrice()==null){price=0.00;}
+        if(p.getPrice()==""|| p.getPrice()==null){continue;}
         else{
             String cleanedPriceStr = p.getPrice().replaceAll("[^0-9.]", ""); // removes $, commas, etc.
-        price = cleanedPriceStr.isEmpty() ? null : Double.parseDouble(cleanedPriceStr);
+            if(cleanedPriceStr.isEmpty()){continue;}
+            price = Double.parseDouble(cleanedPriceStr);
         }
         if(p.getRating()==null|| p.getRating()==""){rating=0.00;}
         else{
@@ -235,7 +236,8 @@ private Map<String, Object> computeFilteredResults(List<ProductDto> products) {
         if(p.getPrice()=="" || p.getPrice()==null){price=0.00;}
         else{
             String cleanedPriceStr = p.getPrice().replaceAll("[^0-9.]", ""); // removes $, commas, etc.
-        price = cleanedPriceStr.isEmpty() ? null : Double.parseDouble(cleanedPriceStr);
+        if(cleanedPriceStr.isEmpty()){continue;}
+            price = Double.parseDouble(cleanedPriceStr);
         }
         if(p.getRating()==null|| p.getRating()==""){rating=0.00;}
         else{
